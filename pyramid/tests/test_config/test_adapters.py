@@ -265,7 +265,7 @@ class AdaptersConfiguratorMixinTests(unittest.TestCase):
         self.assertEqual(intr.type_name, 'traverser')
         self.assertEqual(intr.discriminator, ('traverser', DummyIface))
         self.assertEqual(intr.category_name, 'traversers')
-        self.assertEqual(intr.title, 'traverser for %r' % DummyIface)
+        self.assertEqual(intr.title, 'traverser for {0!r}'.format(DummyIface))
         self.assertEqual(intr['adapter'], DummyTraverser)
         self.assertEqual(intr['iface'], DummyIface)
 

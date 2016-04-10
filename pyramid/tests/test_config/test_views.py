@@ -4341,7 +4341,7 @@ def assert_similar_datetime(one, two):
         one_attr = getattr(one, attr)
         two_attr = getattr(two, attr)
         if not one_attr == two_attr: # pragma: no cover
-            raise AssertionError('%r != %r in %s' % (one_attr, two_attr, attr))
+            raise AssertionError('{0!r} != {1!r} in {2!s}'.format(one_attr, two_attr, attr))
 
 class DummyStaticURLInfo:
     def __init__(self):

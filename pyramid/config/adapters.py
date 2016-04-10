@@ -264,7 +264,7 @@ class AdaptersConfiguratorMixin(object):
         intr = self.introspectable(
             'traversers', 
             discriminator,
-            'traverser for %r' % iface,
+            'traverser for {0!r}'.format(iface),
             'traverser',
             )
         intr['adapter'] = adapter
@@ -316,7 +316,7 @@ class AdaptersConfiguratorMixin(object):
         intr = self.introspectable(
             'resource url adapters', 
             discriminator,
-            'resource url adapter for resource iface %r' % resource_iface,
+            'resource url adapter for resource iface {0!r}'.format(resource_iface),
             'resource url adapter',
             )
         intr['adapter'] = adapter

@@ -215,7 +215,7 @@ ${body}''')
 
     def __init__(self, detail=None, headers=None, comment=None,
                  body_template=None, **kw):
-        status = '%s %s' % (self.code, self.title)
+        status = '{0!s} {1!s}'.format(self.code, self.title)
         Response.__init__(self, status=status, **kw)
         Exception.__init__(self, detail)
         self.detail = self.message = detail
@@ -244,7 +244,7 @@ ${body}''')
                 page_template = self.html_template_obj
                 br = '<br/>'
                 if comment:
-                    html_comment = '<!-- %s -->' % escape(comment)
+                    html_comment = '<!-- {0!s} -->'.format(escape(comment))
             else:
                 self.content_type = 'text/plain'
                 escape = _no_escape

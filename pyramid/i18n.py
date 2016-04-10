@@ -265,7 +265,7 @@ class Translations(gettext.GNUTranslations, object):
             return cls(fileobj=fp, domain=domain)
 
     def __repr__(self):
-        return '<%s: "%s">' % (type(self).__name__,
+        return '<{0!s}: "{1!s}">'.format(type(self).__name__,
                                self._info.get('project-id-version'))
 
     def add(self, translations, merge=True):

@@ -22,10 +22,10 @@ def view_page(context, request):
         if word in wiki:
             page = wiki[word]
             view_url = request.resource_url(page)
-            return '<a href="%s">%s</a>' % (view_url, word)
+            return '<a href="{0!s}">{1!s}</a>'.format(view_url, word)
         else:
             add_url = request.application_url + '/add_page/' + word 
-            return '<a href="%s">%s</a>' % (add_url, word)
+            return '<a href="{0!s}">{1!s}</a>'.format(add_url, word)
 
     content = publish_parts(context.data, writer_name='html')['html_body']
     content = wikiwords.sub(check, content)

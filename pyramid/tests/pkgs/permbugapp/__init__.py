@@ -7,8 +7,8 @@ def x_view(request): # pragma: no cover
 
 def test(context, request):
     # should return false
-     msg = 'Allow ./x? %s' % repr(view_execution_permitted(
-         context, request, 'x'))
+     msg = 'Allow ./x? {0!s}'.format(repr(view_execution_permitted(
+         context, request, 'x')))
      return Response(escape(msg))
 
 def includeme(config):

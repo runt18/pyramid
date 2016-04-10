@@ -1395,8 +1395,8 @@ class TestBasicAuthAuthenticationPolicy(unittest.TestCase):
     def test_unauthenticated_userid(self):
         import base64
         request = testing.DummyRequest()
-        request.headers['Authorization'] = 'Basic %s' % base64.b64encode(
-            bytes_('chrisr:password')).decode('ascii')
+        request.headers['Authorization'] = 'Basic {0!s}'.format(base64.b64encode(
+            bytes_('chrisr:password')).decode('ascii'))
         policy = self._makeOne(None)
         self.assertEqual(policy.unauthenticated_userid(request), 'chrisr')
 
@@ -1426,8 +1426,8 @@ class TestBasicAuthAuthenticationPolicy(unittest.TestCase):
     def test_authenticated_userid(self):
         import base64
         request = testing.DummyRequest()
-        request.headers['Authorization'] = 'Basic %s' % base64.b64encode(
-            bytes_('chrisr:password')).decode('ascii')
+        request.headers['Authorization'] = 'Basic {0!s}'.format(base64.b64encode(
+            bytes_('chrisr:password')).decode('ascii'))
         def check(username, password, request):
             return []
         policy = self._makeOne(check)
@@ -1438,8 +1438,8 @@ class TestBasicAuthAuthenticationPolicy(unittest.TestCase):
         request = testing.DummyRequest()
         inputs = (b'm\xc3\xb6rk\xc3\xb6:'
                   b'm\xc3\xb6rk\xc3\xb6password').decode('utf-8')
-        request.headers['Authorization'] = 'Basic %s' % (
-            base64.b64encode(inputs.encode('utf-8')).decode('latin-1'))
+        request.headers['Authorization'] = 'Basic {0!s}'.format((
+            base64.b64encode(inputs.encode('utf-8')).decode('latin-1')))
         def check(username, password, request):
             return []
         policy = self._makeOne(check)
@@ -1451,8 +1451,8 @@ class TestBasicAuthAuthenticationPolicy(unittest.TestCase):
         request = testing.DummyRequest()
         inputs = (b'm\xc3\xb6rk\xc3\xb6:'
                   b'm\xc3\xb6rk\xc3\xb6password').decode('utf-8')
-        request.headers['Authorization'] = 'Basic %s' % (
-            base64.b64encode(inputs.encode('latin-1')).decode('latin-1'))
+        request.headers['Authorization'] = 'Basic {0!s}'.format((
+            base64.b64encode(inputs.encode('latin-1')).decode('latin-1')))
         def check(username, password, request):
             return []
         policy = self._makeOne(check)
@@ -1462,8 +1462,8 @@ class TestBasicAuthAuthenticationPolicy(unittest.TestCase):
     def test_unauthenticated_userid_invalid_payload(self):
         import base64
         request = testing.DummyRequest()
-        request.headers['Authorization'] = 'Basic %s' % base64.b64encode(
-            bytes_('chrisrpassword')).decode('ascii')
+        request.headers['Authorization'] = 'Basic {0!s}'.format(base64.b64encode(
+            bytes_('chrisrpassword')).decode('ascii'))
         policy = self._makeOne(None)
         self.assertEqual(policy.unauthenticated_userid(request), None)
 
@@ -1574,7 +1574,7 @@ class DummyAuthTktModule(object):
                     if isinstance(v, bytes):
                         v = text_(v)
                     new_items.append((k,v))
-                result = '/'.join(['%s=%s' % (k, v) for k,v in new_items ])
+                result = '/'.join(['{0!s}={1!s}'.format(k, v) for k,v in new_items ])
                 return result
         self.AuthTicket = AuthTicket
 

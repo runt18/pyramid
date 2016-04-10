@@ -108,14 +108,14 @@ class static_view(object):
         path = _secure_path(path_tuple)
 
         if path is None:
-            raise HTTPNotFound('Out of bounds: %s' % request.url)
+            raise HTTPNotFound('Out of bounds: {0!s}'.format(request.url))
 
         if self.package_name: # package resource
-            resource_path = '%s/%s' % (self.docroot.rstrip('/'), path)
+            resource_path = '{0!s}/{1!s}'.format(self.docroot.rstrip('/'), path)
             if resource_isdir(self.package_name, resource_path):
                 if not request.path_url.endswith('/'):
                     self.add_slash_redirect(request)
-                resource_path = '%s/%s' % (
+                resource_path = '{0!s}/{1!s}'.format(
                     resource_path.rstrip('/'), self.index
                 )
 

@@ -150,12 +150,11 @@ class DummyTemplateRenderer(object):
                 myval = self._implementation._received.get(k, _marker)
                 if myval is _marker:
                     raise AssertionError(
-                        'A value for key "%s" was not passed to the renderer'
-                        % k)
+                        'A value for key "{0!s}" was not passed to the renderer'.format(k))
 
             if myval != v:
                 raise AssertionError(
-                    '\nasserted value for %s: %r\nactual value: %r' % (
+                    '\nasserted value for {0!s}: {1!r}\nactual value: {2!r}'.format(
                         k, v, myval))
         return True
 
@@ -557,8 +556,8 @@ class DummyRendererFactory(object):
                 if self.factory:
                     renderer = self.factory(info)
                 else:
-                    raise KeyError('No testing renderer registered for %r' %
-                                   spec)
+                    raise KeyError('No testing renderer registered for {0!r}'.format(
+                                   spec))
         return renderer
 
 

@@ -285,7 +285,7 @@ class JSON(object):
             result = adapters.lookup((obj_iface,), IJSONAdapter,
                                      default=_marker)
             if result is _marker:
-                raise TypeError('%r is not JSON serializable' % (obj,))
+                raise TypeError('{0!r} is not JSON serializable'.format(obj))
             return result(obj, request)
         return default
 
@@ -415,7 +415,7 @@ class RendererHelper(object):
         factory = self.registry.queryUtility(IRendererFactory, name=self.type)
         if factory is None:
             raise ValueError(
-                'No such renderer factory %s' % str(self.type))
+                'No such renderer factory {0!s}'.format(str(self.type)))
         return factory(self)
 
     def get_renderer(self):

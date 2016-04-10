@@ -80,7 +80,7 @@ class TestACLAllowed(unittest.TestCase):
         self.assertTrue(allowed)
         self.assertEqual(str(allowed), msg)
         self.assertTrue('<ACLAllowed instance at ' in repr(allowed))
-        self.assertTrue("with msg %r>" % msg in repr(allowed))
+        self.assertTrue("with msg {0!r}>".format(msg) in repr(allowed))
 
 class TestACLDenied(unittest.TestCase):
     def _getTargetClass(self):
@@ -100,7 +100,7 @@ class TestACLDenied(unittest.TestCase):
         self.assertFalse(denied)
         self.assertEqual(str(denied), msg)
         self.assertTrue('<ACLDenied instance at ' in repr(denied))
-        self.assertTrue("with msg %r>" % msg in repr(denied))
+        self.assertTrue("with msg {0!r}>".format(msg) in repr(denied))
 
 class TestPrincipalsAllowedByPermission(unittest.TestCase):
     def setUp(self):

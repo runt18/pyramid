@@ -50,7 +50,7 @@ class TemplateTest(object):
                     time.sleep(5)
                     proc.poll()
                     if proc.returncode is not None:
-                        raise RuntimeError('%s didnt start' % ininame)
+                        raise RuntimeError('{0!s} didnt start'.format(ininame))
                     conn = httplib.HTTPConnection('localhost:6543')
                     conn.request('GET', '/')
                     resp = conn.getresponse()

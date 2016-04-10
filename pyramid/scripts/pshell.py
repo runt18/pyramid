@@ -23,7 +23,7 @@ def main(argv=sys.argv, quiet=False):
 
 def python_shell_runner(env, help, interact=interact):
     cprt = 'Type "help" for more information.'
-    banner = "Python %s on %s\n%s" % (sys.version, sys.platform, cprt)
+    banner = "Python {0!s} on {1!s}\n{2!s}".format(sys.version, sys.platform, cprt)
     banner += '\n\n' + help + '\n'
     interact(banner, local=env)
 
@@ -166,12 +166,12 @@ class PShellCommand(object):
         if env_help:
             help += 'Environment:'
             for var in sorted(env_help.keys()):
-                help += '\n  %-12s %s' % (var, env_help[var])
+                help += '\n  {0:<12!s} {1!s}'.format(var, env_help[var])
 
         if self.object_help:
             help += '\n\nCustom Variables:'
             for var in sorted(self.object_help.keys()):
-                help += '\n  %-12s %s' % (var, self.object_help[var])
+                help += '\n  {0:<12!s} {1!s}'.format(var, self.object_help[var])
 
         if shell is None:
             try:
@@ -198,7 +198,7 @@ class PShellCommand(object):
 
         self.out('Available shells:')
         for name in sorted_names:
-            self.out('  %s' % (name,))
+            self.out('  {0!s}'.format(name))
         return 0
 
     def find_all_shells(self):
@@ -243,7 +243,7 @@ class PShellCommand(object):
 
             if shell is None:
                 raise ValueError(
-                    'could not find a shell named "%s"' % user_shell
+                    'could not find a shell named "{0!s}"'.format(user_shell)
                 )
 
         if shell is None:

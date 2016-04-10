@@ -21,7 +21,7 @@ def get_app(config_uri, name=None, options=None, loadapp=loadapp):
     the ``config_uri`` string expecting the format ``inifile#name``.
     If no name is found, the name will default to "main"."""
     path, section = _getpathsec(config_uri, name)
-    config_name = 'config:%s' % path
+    config_name = 'config:{0!s}'.format(path)
     here_dir = os.getcwd()
 
     app = loadapp(
@@ -44,7 +44,7 @@ def get_appsettings(config_uri, name=None, options=None, appconfig=appconfig):
     the ``config_uri`` string expecting the format ``inifile#name``.
     If no name is found, the name will default to "main"."""
     path, section = _getpathsec(config_uri, name)
-    config_name = 'config:%s' % path
+    config_name = 'config:{0!s}'.format(path)
     here_dir = os.getcwd()
     return appconfig(
         config_name,

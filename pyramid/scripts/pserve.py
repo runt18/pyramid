@@ -51,7 +51,7 @@ if WIN and not hasattr(os, 'kill'): # pragma: no cover
         kernel32 = ctypes.windll.kernel32
         handle = kernel32.OpenProcess(1, 0, pid)
         if (0 == kernel32.TerminateProcess(handle, 0)):
-            raise OSError('No such process %s' % pid)
+            raise OSError('No such process {0!s}'.format(pid))
 else:
     kill = os.kill
 
@@ -248,7 +248,7 @@ class PServeCommand(object):
 
         if cmd not in (None, 'start', 'stop', 'restart', 'status'):
             self.out(
-                'Error: must give start|stop|restart (not %s)' % cmd)
+                'Error: must give start|stop|restart (not {0!s})'.format(cmd))
             return 2
 
         if cmd == 'status' or self.options.show_status:
@@ -301,7 +301,7 @@ class PServeCommand(object):
             try:
                 writeable_log_file = open(self.options.log_file, 'a')
             except IOError as ioe:
-                msg = 'Error: Unable to write to log file: %s' % ioe
+                msg = 'Error: Unable to write to log file: {0!s}'.format(ioe)
                 raise ValueError(msg)
             writeable_log_file.close()
 
@@ -310,7 +310,7 @@ class PServeCommand(object):
             try:
                 writeable_pid_file = open(self.options.pid_file, 'a')
             except IOError as ioe:
-                msg = 'Error: Unable to write to pid file: %s' % ioe
+                msg = 'Error: Unable to write to pid file: {0!s}'.format(ioe)
                 raise ValueError(msg)
             writeable_pid_file.close()
 
@@ -372,7 +372,7 @@ a real process manager for your processes like Systemd, Circus, or Supervisor.
 
         if self.options.verbose > 0:
             if hasattr(os, 'getpid'):
-                msg = 'Starting server in PID %i.' % os.getpid()
+                msg = 'Starting server in PID {0:d}.'.format(os.getpid())
             else:
                 msg = 'Starting server.'
             self.out(msg)
@@ -387,7 +387,7 @@ a real process manager for your processes like Systemd, Circus, or Supervisor.
                     msg = ' ' + str(e)
                 else:
                     msg = ''
-                self.out('Exiting%s (-v to see traceback)' % msg)
+                self.out('Exiting{0!s} (-v to see traceback)'.format(msg))
 
         if self.options.browser:
             def open_browser():
@@ -446,8 +446,7 @@ a real process manager for your processes like Systemd, Circus, or Supervisor.
         pid = live_pidfile(self.options.pid_file)
         if pid:
             raise DaemonizeException(
-                "Daemon is already running (PID: %s from PID file %s)"
-                % (pid, self.options.pid_file))
+                "Daemon is already running (PID: {0!s} from PID file {1!s})".format(pid, self.options.pid_file))
 
         if self.options.verbose > 0:
             self.out('Entering daemon mode')
@@ -506,26 +505,26 @@ a real process manager for your processes like Systemd, Circus, or Supervisor.
                 self.out(msg % (filename, pid_in_file, current_pid))
                 return
         if verbosity > 0:
-            self.out("Removing PID file %s" % filename)
+            self.out("Removing PID file {0!s}".format(filename))
         try:
             os.unlink(filename)
             return
         except OSError as e:
             # Record, but don't give traceback
-            self.out("Cannot remove PID file: (%s)" % e)
+            self.out("Cannot remove PID file: ({0!s})".format(e))
         # well, at least lets not leave the invalid PID around...
         try:
             with open(filename, 'w') as f:
                 f.write('')
         except OSError as e:
-            self.out('Stale PID left in file: %s (%s)' % (filename, e))
+            self.out('Stale PID left in file: {0!s} ({1!s})'.format(filename, e))
         else:
             self.out('Stale PID removed')
 
     def record_pid(self, pid_file):
         pid = os.getpid()
         if self.options.verbose > 1:
-            self.out('Writing PID %s to %s' % (pid, pid_file))
+            self.out('Writing PID {0!s} to {1!s}'.format(pid, pid_file))
         with open(pid_file, 'w') as f:
             f.write(str(pid))
         atexit.register(self._remove_pid_file, pid, pid_file, self.options.verbose)
@@ -533,19 +532,19 @@ a real process manager for your processes like Systemd, Circus, or Supervisor.
     def stop_daemon(self): # pragma: no cover
         pid_file = self.options.pid_file or 'pyramid.pid'
         if not os.path.exists(pid_file):
-            self.out('No PID file exists in %s' % pid_file)
+            self.out('No PID file exists in {0!s}'.format(pid_file))
             return 1
         pid = read_pidfile(pid_file)
         if not pid:
-            self.out("Not a valid PID file in %s" % pid_file)
+            self.out("Not a valid PID file in {0!s}".format(pid_file))
             return 1
         pid = live_pidfile(pid_file)
         if not pid:
-            self.out("PID in %s is not valid (deleting)" % pid_file)
+            self.out("PID in {0!s} is not valid (deleting)".format(pid_file))
             try:
                 os.unlink(pid_file)
             except (OSError, IOError) as e:
-                self.out("Could not delete: %s" % e)
+                self.out("Could not delete: {0!s}".format(e))
                 return 2
             return 1
         for j in range(10):
@@ -555,7 +554,7 @@ a real process manager for your processes like Systemd, Circus, or Supervisor.
             kill(pid, signal.SIGTERM)
             time.sleep(1)
         else:
-            self.out("failed to kill web process %s" % pid)
+            self.out("failed to kill web process {0!s}".format(pid))
             return 3
         if os.path.exists(pid_file):
             os.unlink(pid_file)
@@ -564,17 +563,17 @@ a real process manager for your processes like Systemd, Circus, or Supervisor.
     def show_status(self): # pragma: no cover
         pid_file = self.options.pid_file or 'pyramid.pid'
         if not os.path.exists(pid_file):
-            self.out('No PID file %s' % pid_file)
+            self.out('No PID file {0!s}'.format(pid_file))
             return 1
         pid = read_pidfile(pid_file)
         if not pid:
-            self.out('No PID in file %s' % pid_file)
+            self.out('No PID in file {0!s}'.format(pid_file))
             return 1
         pid = live_pidfile(pid_file)
         if not pid:
-            self.out('PID %s in %s is not running' % (pid, pid_file))
+            self.out('PID {0!s} in {1!s} is not running'.format(pid, pid_file))
             return 1
-        self.out('Server running in PID %s' % pid)
+        self.out('Server running in PID {0!s}'.format(pid))
         return 0
 
     def restart_with_reloader(self): # pragma: no cover
@@ -622,7 +621,7 @@ a real process manager for your processes like Systemd, Circus, or Supervisor.
                 if exit_code != 3:
                     return exit_code
             if self.options.verbose > 0:
-                self.out('%s %s %s' % ('-' * 20, 'Restarting', '-' * 20))
+                self.out('{0!s} {1!s} {2!s}'.format('-' * 20, 'Restarting', '-' * 20))
 
     def change_user_group(self, user, group): # pragma: no cover
         import pwd
@@ -646,7 +645,7 @@ or Supervisor, all of which support process security.
                     entry = grp.getgrnam(group)
                 except KeyError:
                     raise ValueError(
-                        "Bad group: %r; no such group exists" % group)
+                        "Bad group: {0!r}; no such group exists".format(group))
                 gid = entry.gr_gid
         try:
             uid = int(user)
@@ -656,12 +655,12 @@ or Supervisor, all of which support process security.
                 entry = pwd.getpwnam(user)
             except KeyError:
                 raise ValueError(
-                    "Bad username: %r; no such user exists" % user)
+                    "Bad username: {0!r}; no such user exists".format(user))
             if not gid:
                 gid = entry.pw_gid
             uid = entry.pw_uid
         if self.options.verbose > 0:
-            self.out('Changing user to %s:%s (%s:%s)' % (
+            self.out('Changing user to {0!s}:{1!s} ({2!s}:{3!s})'.format(
                 user, group or '(unknown)', uid, gid))
         if gid:
             os.setgid(gid)
@@ -927,7 +926,7 @@ class Monitor(object): # pragma: no cover
                 filenames.extend(file_callback())
             except:
                 print(
-                    "Error calling reloader callback %r:" % file_callback)
+                    "Error calling reloader callback {0!r}:".format(file_callback))
                 traceback.print_exc()
         for module in list(sys.modules.values()):
             try:
@@ -961,12 +960,12 @@ class Monitor(object): # pragma: no cover
                 if filename.endswith('.py'):
                     is_valid = self.check_syntax(filename)
                 if is_valid:
-                    print("%s changed ..." % filename)
+                    print("{0!s} changed ...".format(filename))
         if new_changes:
             self.pending_reload = True
             if self.syntax_error_files:
                 for filename in sorted(self.syntax_error_files):
-                    print("%s has a SyntaxError; NOT reloading." % filename)
+                    print("{0!s} has a SyntaxError; NOT reloading.".format(filename))
         if self.pending_reload and not self.syntax_error_files:
             self.pending_reload = False
             return False
@@ -1019,7 +1018,7 @@ def wsgiref_server_runner(wsgi_app, global_conf, **kw): # pragma: no cover
     host = kw.get('host', '0.0.0.0')
     port = int(kw.get('port', 8080))
     server = make_server(host, port, wsgi_app)
-    print('Starting HTTP server on http://%s:%s' % (host, port))
+    print('Starting HTTP server on http://{0!s}:{1!s}'.format(host, port))
     server.serve_forever()
 
 # For paste.deploy server instantiation (egg:pyramid#cherrypy)
@@ -1125,10 +1124,9 @@ def cherrypy_server_runner(
     try:
         protocol = is_ssl and 'https' or 'http'
         if host == '0.0.0.0':
-            print('serving on 0.0.0.0:%s view at %s://127.0.0.1:%s' %
-                  (port, protocol, port))
+            print('serving on 0.0.0.0:{0!s} view at {1!s}://127.0.0.1:{2!s}'.format(port, protocol, port))
         else:
-            print('serving on %s://%s:%s' % (protocol, host, port))
+            print('serving on {0!s}://{1!s}:{2!s}'.format(protocol, host, port))
         server.start()
     except (KeyboardInterrupt, SystemExit):
         server.stop()

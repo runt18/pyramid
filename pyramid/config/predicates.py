@@ -23,7 +23,7 @@ class XHRPredicate(object):
         self.val = bool(val)
 
     def text(self):
-        return 'xhr = %s' % self.val
+        return 'xhr = {0!s}'.format(self.val)
 
     phash = text
 
@@ -39,7 +39,7 @@ class RequestMethodPredicate(object):
         self.val = request_method
 
     def text(self):
-        return 'request_method = %s' % (','.join(self.val))
+        return 'request_method = {0!s}'.format((','.join(self.val)))
 
     phash = text
 
@@ -56,7 +56,7 @@ class PathInfoPredicate(object):
         self.val = val
 
     def text(self):
-        return 'path_info = %s' % (self.orig,)
+        return 'path_info = {0!s}'.format(self.orig)
 
     phash = text
 
@@ -83,9 +83,9 @@ class RequestParamPredicate(object):
         self.reqs = reqs
 
     def text(self):
-        return 'request_param %s' % ','.join(
-            ['%s=%s' % (x,y) if y else x for x, y in self.reqs]
-        )
+        return 'request_param {0!s}'.format(','.join(
+            ['{0!s}={1!s}'.format(x, y) if y else x for x, y in self.reqs]
+        ))
 
     phash = text
 
@@ -109,9 +109,9 @@ class HeaderPredicate(object):
             except re.error as why:
                 raise ConfigurationError(why.args[0])
         if v is None:
-            self._text = 'header %s' % (name,)
+            self._text = 'header {0!s}'.format(name)
         else:
-            self._text = 'header %s=%s' % (name, val_str)
+            self._text = 'header {0!s}={1!s}'.format(name, val_str)
         self.name = name
         self.val = v
 
@@ -133,7 +133,7 @@ class AcceptPredicate(object):
         self.val = val
 
     def text(self):
-        return 'accept = %s' % (self.val,)
+        return 'accept = {0!s}'.format(self.val)
 
     phash = text
 
@@ -145,7 +145,7 @@ class ContainmentPredicate(object):
         self.val = config.maybe_dotted(val)
 
     def text(self):
-        return 'containment = %s' % (self.val,)
+        return 'containment = {0!s}'.format(self.val)
 
     phash = text
 
@@ -158,7 +158,7 @@ class RequestTypePredicate(object):
         self.val = val
 
     def text(self):
-        return 'request_type = %s' % (self.val,)
+        return 'request_type = {0!s}'.format(self.val)
 
     phash = text
 
@@ -173,9 +173,9 @@ class MatchParamPredicate(object):
         self.reqs = [ (x.strip(), y.strip()) for x, y in reqs ]
 
     def text(self):
-        return 'match_param %s' % ','.join(
-            ['%s=%s' % (x,y) for x, y in self.reqs]
-            )
+        return 'match_param {0!s}'.format(','.join(
+            ['{0!s}={1!s}'.format(x, y) for x, y in self.reqs]
+            ))
 
     phash = text
 
@@ -196,7 +196,7 @@ class CustomPredicate(object):
         return getattr(
             self.func,
             '__text__',
-            'custom predicate: %s' % object_description(self.func)
+            'custom predicate: {0!s}'.format(object_description(self.func))
             )
 
     def phash(self):
@@ -206,7 +206,7 @@ class CustomPredicate(object):
         # functions for custom predicates, so that the hash output
         # of predicate instances which are "logically the same"
         # may compare equal.
-        return 'custom:%r' % hash(self.func)
+        return 'custom:{0!r}'.format(hash(self.func))
 
     def __call__(self, context, request):
         return self.func(context, request)
@@ -249,7 +249,7 @@ class CheckCSRFTokenPredicate(object):
         self.val = val
 
     def text(self):
-        return 'check_csrf = %s' % (self.val,)
+        return 'check_csrf = {0!s}'.format(self.val)
 
     phash = text
 
@@ -270,7 +270,7 @@ class PhysicalPathPredicate(object):
             self.val = ('',) + val
 
     def text(self):
-        return 'physical_path = %s' % (self.val,)
+        return 'physical_path = {0!s}'.format(self.val)
 
     phash = text
 
@@ -287,7 +287,7 @@ class EffectivePrincipalsPredicate(object):
             self.val = set((val,))
 
     def text(self):
-        return 'effective_principals = %s' % sorted(list(self.val))
+        return 'effective_principals = {0!s}'.format(sorted(list(self.val)))
 
     phash = text
 

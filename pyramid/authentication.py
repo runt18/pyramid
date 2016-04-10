@@ -84,14 +84,14 @@ class CallbackAuthenticationPolicy(object):
 
         if self.callback is None:
             debug and self._log(
-                'there was no groupfinder callback; returning %r' % (userid,),
+                'there was no groupfinder callback; returning {0!r}'.format(userid),
                 'authenticated_userid',
                 request)
             return userid
         callback_ok = self.callback(userid, request)
         if callback_ok is not None: # is not None!
             debug and self._log(
-                'groupfinder callback returned %r; returning %r' % (
+                'groupfinder callback returned {0!r}; returning {1!r}'.format(
                     callback_ok, userid),
                 'authenticated_userid',
                 request
@@ -132,7 +132,7 @@ class CallbackAuthenticationPolicy(object):
 
         if userid is None:
             debug and self._log(
-                'unauthenticated_userid returned %r; returning %r' % (
+                'unauthenticated_userid returned {0!r}; returning {1!r}'.format(
                     userid, effective_principals),
                 'effective_principals',
                 request
@@ -157,14 +157,14 @@ class CallbackAuthenticationPolicy(object):
         else:
             groups = self.callback(userid, request)
             debug and self._log(
-                'groupfinder callback returned %r as groups' % (groups,),
+                'groupfinder callback returned {0!r} as groups'.format(groups),
                 'effective_principals',
                 request)
 
         if groups is None: # is None!
             debug and self._log(
-                'returning effective principals: %r' % (
-                    effective_principals,),
+                'returning effective principals: {0!r}'.format(
+                    effective_principals),
                 'effective_principals',
                 request
                 )
@@ -175,8 +175,8 @@ class CallbackAuthenticationPolicy(object):
         effective_principals.extend(groups)
 
         debug and self._log(
-            'returning effective principals: %r' % (
-                effective_principals,),
+            'returning effective principals: {0!r}'.format(
+                effective_principals),
             'effective_principals',
             request
         )
@@ -246,7 +246,7 @@ class RepozeWho1AuthenticationPolicy(CallbackAuthenticationPolicy):
 
         if userid is None:
             self.debug and self._log(
-                'repoze.who.userid is None, returning None' % userid,
+                'repoze.who.userid is None, returning None'.format(*userid),
                 'authenticated_userid',
                 request)
             return None
@@ -290,8 +290,8 @@ class RepozeWho1AuthenticationPolicy(CallbackAuthenticationPolicy):
 
         if identity is None:
             self.debug and self._log(
-                ('repoze.who identity was None; returning %r' %
-                 effective_principals),
+                ('repoze.who identity was None; returning {0!r}'.format(
+                 effective_principals)),
                 'effective_principals',
                 request
                 )
@@ -304,8 +304,8 @@ class RepozeWho1AuthenticationPolicy(CallbackAuthenticationPolicy):
 
         if groups is None: # is None!
             self.debug and self._log(
-                ('security policy groups callback returned None; returning %r' %
-                 effective_principals),
+                ('security policy groups callback returned None; returning {0!r}'.format(
+                 effective_principals)),
                 'effective_principals',
                 request
                 )
@@ -315,8 +315,8 @@ class RepozeWho1AuthenticationPolicy(CallbackAuthenticationPolicy):
 
         if userid is None:
             self.debug and self._log(
-                ('repoze.who.userid was None; returning %r' %
-                 effective_principals),
+                ('repoze.who.userid was None; returning {0!r}'.format(
+                 effective_principals)),
                 'effective_principals',
                 request
                 )
@@ -716,7 +716,7 @@ class AuthTicket(object):
             self.user_data, self.hashalg)
 
     def cookie_value(self):
-        v = '%s%08x%s!' % (self.digest(), int(self.time),
+        v = '{0!s}{1:08x}{2!s}!'.format(self.digest(), int(self.time),
                            url_quote(self.userid))
         if self.tokens:
             v += self.tokens + '!'
@@ -748,7 +748,7 @@ def parse_ticket(secret, ticket, ip, hashalg='md5'):
     try:
         timestamp = int(ticket[digest_size:digest_size + 8], 16)
     except ValueError as e:
-        raise BadTicket('Timestamp is not a hex integer: %s' % e)
+        raise BadTicket('Timestamp is not a hex integer: {0!s}'.format(e))
     try:
         userid, data = ticket[digest_size + 8:].split('!', 1)
     except ValueError:
@@ -993,7 +993,7 @@ class AuthTktCookieHelper(object):
         if encoding_data:
             encoding, encoder = encoding_data
             userid = encoder(userid)
-            user_data = 'userid_type:%s' % encoding
+            user_data = 'userid_type:{0!s}'.format(encoding)
 
         new_tokens = []
         for token in tokens:
@@ -1001,9 +1001,9 @@ class AuthTktCookieHelper(object):
                 try:
                     token = ascii_native_(token)
                 except UnicodeEncodeError:
-                    raise ValueError("Invalid token %r" % (token,))
+                    raise ValueError("Invalid token {0!r}".format(token))
             if not (isinstance(token, str) and VALID_TOKEN.match(token)):
-                raise ValueError("Invalid token %r" % (token,))
+                raise ValueError("Invalid token {0!r}".format(token))
             new_tokens.append(token)
         tokens = tuple(new_tokens)
 
@@ -1142,7 +1142,7 @@ class BasicAuthAuthenticationPolicy(CallbackAuthenticationPolicy):
     def forget(self, request):
         """ Returns challenge headers. This should be attached to a response
         to indicate that credentials are required."""
-        return [('WWW-Authenticate', 'Basic realm="%s"' % self.realm)]
+        return [('WWW-Authenticate', 'Basic realm="{0!s}"'.format(self.realm))]
 
     def callback(self, username, request):
         # Username arg is ignored.  Unfortunately _get_credentials winds up

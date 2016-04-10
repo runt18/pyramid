@@ -57,13 +57,13 @@ def urlencode(query, doseq=True):
         if is_nonstr_iter(v):
             for x in v:
                 x = quote_plus(x)
-                result += '%s%s=%s' % (prefix, k, x)
+                result += '{0!s}{1!s}={2!s}'.format(prefix, k, x)
                 prefix = '&'
         elif v is None:
-            result += '%s%s=' % (prefix, k)
+            result += '{0!s}{1!s}='.format(prefix, k)
         else:
             v = quote_plus(v)
-            result += '%s%s=%s' % (prefix, k, v)
+            result += '{0!s}{1!s}={2!s}'.format(prefix, k, v)
 
         prefix = '&'
 

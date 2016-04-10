@@ -83,8 +83,8 @@ class Router(object):
             match, route = info['match'], info['route']
             if route is None:
                 if debug_routematch:
-                    msg = ('no route matched for url %s' %
-                           request.url)
+                    msg = ('no route matched for url {0!s}'.format(
+                           request.url))
                     logger and logger.debug(msg)
             else:
                 attrs['matchdict'] = match

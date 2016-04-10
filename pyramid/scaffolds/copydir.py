@@ -65,11 +65,11 @@ def copy_dir(source, dest, vars, verbosity, simulate, indent=0,
     pad = ' ' * (indent * 2)
     if not os.path.exists(dest):
         if verbosity >= 1:
-            out('%sCreating %s/' % (pad, dest))
+            out('{0!s}Creating {1!s}/'.format(pad, dest))
         if not simulate:
             makedirs(dest, verbosity=verbosity, pad=pad)
     elif verbosity >= 2:
-        out('%sDirectory %s exists' % (pad, dest))
+        out('{0!s}Directory {1!s} exists'.format(pad, dest))
     for name in names:
         if use_pkg_resources:
             full = '/'.join([source[1], name])
@@ -89,7 +89,7 @@ def copy_dir(source, dest, vars, verbosity, simulate, indent=0,
             sub_file = sub_vars
         if use_pkg_resources and pkg_resources.resource_isdir(source[0], full):
             if verbosity:
-                out('%sRecursing into %s' % (pad, os.path.basename(full)))
+                out('{0!s}Recursing into {1!s}'.format(pad, os.path.basename(full)))
             copy_dir((source[0], full), dest_full, vars, verbosity, simulate,
                      indent=indent + 1, sub_vars=sub_vars,
                      interactive=interactive, overwrite=overwrite,
@@ -97,7 +97,7 @@ def copy_dir(source, dest, vars, verbosity, simulate, indent=0,
             continue
         elif not use_pkg_resources and os.path.isdir(full):
             if verbosity:
-                out('%sRecursing into %s' % (pad, os.path.basename(full)))
+                out('{0!s}Recursing into {1!s}'.format(pad, os.path.basename(full)))
             copy_dir(full, dest_full, vars, verbosity, simulate,
                      indent=indent + 1, sub_vars=sub_vars,
                      interactive=interactive, overwrite=overwrite,
@@ -124,8 +124,7 @@ def copy_dir(source, dest, vars, verbosity, simulate, indent=0,
                 old_content = f.read()
             if old_content == content:
                 if verbosity:
-                    out('%s%s already exists (same content)' %
-                          (pad, dest_full))
+                    out('{0!s}{1!s} already exists (same content)'.format(pad, dest_full))
                 continue # pragma: no cover
             if interactive:
                 if not query_interactive(
@@ -136,10 +135,10 @@ def copy_dir(source, dest, vars, verbosity, simulate, indent=0,
             elif not overwrite:
                 continue # pragma: no cover 
         if verbosity and use_pkg_resources:
-            out('%sCopying %s to %s' % (pad, full, dest_full))
+            out('{0!s}Copying {1!s} to {2!s}'.format(pad, full, dest_full))
         elif verbosity:
             out(
-                '%sCopying %s to %s' % (pad, os.path.basename(full),
+                '{0!s}Copying {1!s} to {2!s}'.format(pad, os.path.basename(full),
                                         dest_full))
         if not simulate:
             with open(dest_full, 'wb') as f:
@@ -157,7 +156,7 @@ def should_skip_file(name):
     if name.endswith(('~', '.bak')):
         return 'Skipping backup file %(filename)s'
     if name.endswith(('.pyc', '.pyo')):
-        return 'Skipping %s file ' % os.path.splitext(name)[1] + '%(filename)s'
+        return 'Skipping {0!s} file '.format(os.path.splitext(name)[1]) + '%(filename)s'
     if name.endswith('$py.class'):
         return 'Skipping $py.class file %(filename)s'
     if name in ('CVS', '_darcs'):
@@ -188,15 +187,15 @@ def query_interactive(src_fn, dest_fn, src_content, dest_content,
     removed = len([l for l in u_diff if l.startswith('-') and
                    not l.startswith('---')])
     if added > removed:
-        msg = '; %i lines added' % (added - removed)
+        msg = '; {0:d} lines added'.format((added - removed))
     elif removed > added:
-        msg = '; %i lines removed' % (removed - added)
+        msg = '; {0:d} lines removed'.format((removed - added))
     else:
         msg = ''
-    out('Replace %i bytes with %i bytes (%i/%i lines changed%s)' % (
+    out('Replace {0:d} bytes with {1:d} bytes ({2:d}/{3:d} lines changed{4!s})'.format(
         len(dest_content), len(src_content),
         removed, len(dest_content.splitlines()), msg))
-    prompt = 'Overwrite %s [y/n/d/B/?] ' % dest_fn
+    prompt = 'Overwrite {0!s} [y/n/d/B/?] '.format(dest_fn)
     while 1:
         if all_answer is None:
             response = input_(prompt).strip().lower()
@@ -209,7 +208,7 @@ def query_interactive(src_fn, dest_fn, src_content, dest_content,
             while os.path.exists(new_dest_fn):
                 n += 1
                 new_dest_fn = dest_fn + '.bak' + str(n)
-            out('Backing up %s to %s' % (dest_fn, new_dest_fn))
+            out('Backing up {0!s} to {1!s}'.format(dest_fn, new_dest_fn))
             if not simulate:
                 shutil.copyfile(dest_fn, new_dest_fn)
             return True
@@ -248,7 +247,7 @@ def makedirs(dir, verbosity, pad):
 
 def substitute_filename(fn, vars):
     for var, value in vars.items():
-        fn = fn.replace('+%s+' % var, str(value))
+        fn = fn.replace('+{0!s}+'.format(var), str(value))
     return fn
 
 def substitute_content(content, vars, filename='<string>',

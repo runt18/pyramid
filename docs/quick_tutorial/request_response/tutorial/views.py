@@ -15,7 +15,7 @@ class TutorialViews:
     def plain(self):
         name = self.request.params.get('name', 'No Name Provided')
 
-        body = 'URL %s with name: %s' % (self.request.url, name)
+        body = 'URL {0!s} with name: {1!s}'.format(self.request.url, name)
         return Response(
             content_type='text/plain',
             body=body

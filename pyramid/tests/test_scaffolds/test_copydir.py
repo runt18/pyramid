@@ -78,8 +78,8 @@ class Test_copy_dir(unittest.TestCase):
                       2, False,
                       template_renderer=dummy_template_renderer)
         result = self.out.getvalue()
-        self.assertTrue('%s already exists (same content)' % \
-            os.path.join(self.dirname, 'mypackage', '__init__.py') in result)
+        self.assertTrue('{0!s} already exists (same content)'.format( \
+            os.path.join(self.dirname, 'mypackage', '__init__.py')) in result)
 
     def test_direxists_message(self):
         vars = {'package':'mypackage'}
@@ -92,7 +92,7 @@ class Test_copy_dir(unittest.TestCase):
                       2, False,
                       template_renderer=dummy_template_renderer)
         result = self.out.getvalue()
-        self.assertTrue('Directory %s exists' % self.dirname in result, result)
+        self.assertTrue('Directory {0!s} exists'.format(self.dirname) in result, result)
 
     def test_overwrite_false(self):
         vars = {'package':'mypackage'}
@@ -291,7 +291,7 @@ class Test_should_skip_file(unittest.TestCase):
             extension = os.path.splitext(name)[1]
             self.assertEqual(
                 self._callFUT(name),
-                'Skipping %s file ' % extension + '%(filename)s')
+                'Skipping {0!s} file '.format(extension) + '%(filename)s')
 
     def test_should_skip_jython_class_file(self):
         self.assertEqual(

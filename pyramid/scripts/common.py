@@ -11,8 +11,7 @@ def parse_vars(args):
     for arg in args:
         if '=' not in arg:
             raise ValueError(
-                'Variable assignment %r invalid (no "=")'
-                % arg)
+                'Variable assignment {0!r} invalid (no "=")'.format(arg))
         name, value = arg.split('=', 1)
         result[name] = value
     return result

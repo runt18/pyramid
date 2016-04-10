@@ -110,7 +110,7 @@ route_re = re.compile(r'(\{[_a-zA-Z][^{}]*(?:\{[^{}]*\}[^{}]*)*\})')
 
 def update_pattern(matchobj):
     name = matchobj.group(0)
-    return '{%s}' % name[1:]
+    return '{{{0!s}}}'.format(name[1:])
 
 def _compile_route(route):
     # This function really wants to consume Unicode patterns natively, but if
@@ -162,8 +162,8 @@ def _compile_route(route):
             name, reg = name.split(':', 1)
         else:
             reg = '[^/]+'
-        gen.append('%%(%s)s' % native_(name)) # native
-        name = '(?P<%s>%s)' % (name, reg) # unicode
+        gen.append('%({0!s})s'.format(native_(name))) # native
+        name = '(?P<{0!s}>{1!s})'.format(name, reg) # unicode
         rpat.append(name)
         s = pat.pop() # unicode
         if s:
@@ -176,8 +176,8 @@ def _compile_route(route):
             gen.append(quote_path_segment(s, safe='/').replace('%', '%%'))
 
     if remainder:
-        rpat.append('(?P<%s>.*?)' % remainder) # unicode
-        gen.append('%%(%s)s' % native_(remainder)) # native
+        rpat.append('(?P<{0!s}>.*?)'.format(remainder)) # unicode
+        gen.append('%({0!s})s'.format(native_(remainder))) # native
 
     pattern = ''.join(rpat) + '$' # unicode
 

@@ -323,30 +323,29 @@ def object_description(object):
         return shortrepr(object, '}')
     module = inspect.getmodule(object)
     if module is None:
-        return text_('object %s' % str(object))
+        return text_('object {0!s}'.format(str(object)))
     modulename = module.__name__
     if inspect.ismodule(object):
-        return text_('module %s' % modulename)
+        return text_('module {0!s}'.format(modulename))
     if inspect.ismethod(object):
         oself = getattr(object, '__self__', None)
         if oself is None: # pragma: no cover
             oself = getattr(object, 'im_self', None)
-        return text_('method %s of class %s.%s' %
-                     (object.__name__, modulename,
+        return text_('method {0!s} of class {1!s}.{2!s}'.format(object.__name__, modulename,
                       oself.__class__.__name__))
 
     if inspect.isclass(object):
-        dottedname = '%s.%s' % (modulename, object.__name__)
-        return text_('class %s' % dottedname)
+        dottedname = '{0!s}.{1!s}'.format(modulename, object.__name__)
+        return text_('class {0!s}'.format(dottedname))
     if inspect.isfunction(object):
-        dottedname = '%s.%s' % (modulename, object.__name__)
-        return text_('function %s' % dottedname)
-    return text_('object %s' % str(object))
+        dottedname = '{0!s}.{1!s}'.format(modulename, object.__name__)
+        return text_('function {0!s}'.format(dottedname))
+    return text_('object {0!s}'.format(str(object)))
 
 def shortrepr(object, closer):
     r = str(object)
     if len(r) > 100:
-        r = r[:100] + ' ... %s' % closer
+        r = r[:100] + ' ... {0!s}'.format(closer)
     return r
 
 class Sentinel(object):
@@ -470,13 +469,11 @@ class TopologicalSorter(object):
 
         if not self.req_before.issubset(has_before):
             raise ConfigurationError(
-                'Unsatisfied before dependencies: %s'
-                % (', '.join(sorted(self.req_before - has_before)))
+                'Unsatisfied before dependencies: {0!s}'.format((', '.join(sorted(self.req_before - has_before))))
             )
         if not self.req_after.issubset(has_after):
             raise ConfigurationError(
-                'Unsatisfied after dependencies: %s'
-                % (', '.join(sorted(self.req_after - has_after)))
+                'Unsatisfied after dependencies: {0!s}'.format((', '.join(sorted(self.req_after - has_after))))
             )
 
         sorted_names = []
@@ -537,8 +534,8 @@ class ActionInfo(object):
 
     def __str__(self):
         srclines = self.src.split('\n')
-        src = '\n'.join('    %s' % x for x in srclines)
-        return 'Line %s of file %s:\n%s' % (self.line, self.file, src)
+        src = '\n'.join('    {0!s}'.format(x) for x in srclines)
+        return 'Line {0!s} of file {1!s}:\n{2!s}'.format(self.line, self.file, src)
 
 def action_method(wrapped):
     """ Wrapper to provide the right conflict info report data when a method

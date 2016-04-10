@@ -32,10 +32,10 @@ def view_page(request):
         exists = request.dbsession.query(Page).filter_by(name=word).all()
         if exists:
             view_url = request.route_url('view_page', pagename=word)
-            return '<a href="%s">%s</a>' % (view_url, cgi.escape(word))
+            return '<a href="{0!s}">{1!s}</a>'.format(view_url, cgi.escape(word))
         else:
             add_url = request.route_url('add_page', pagename=word)
-            return '<a href="%s">%s</a>' % (add_url, cgi.escape(word))
+            return '<a href="{0!s}">{1!s}</a>'.format(add_url, cgi.escape(word))
 
     content = publish_parts(page.data, writer_name='html')['html_body']
     content = wikiwords.sub(add_link, content)

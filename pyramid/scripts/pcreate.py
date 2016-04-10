@@ -112,7 +112,7 @@ class PCreateCommand(object):
             # and combine it with '-branch'
             version_match = re.match(r'(\d+\.\d+)', self.pyramid_dist.version)
             if version_match is not None:
-                pyramid_docs_branch = "%s-branch" % version_match.group()
+                pyramid_docs_branch = "{0!s}-branch".format(version_match.group())
             # if can not parse the version then default to 'latest'
             else:
                 pyramid_docs_branch = 'latest'
@@ -141,7 +141,7 @@ class PCreateCommand(object):
             max_name = max([len(t.name) for t in scaffolds])
             self.out('Available scaffolds:')
             for scaffold in scaffolds:
-                self.out('  %s:%s  %s' % (
+                self.out('  {0!s}:{1!s}  {2!s}'.format(
                     scaffold.name,
                     ' ' * (max_name - len(scaffold.name)), scaffold.summary))
         else:
@@ -157,7 +157,7 @@ class PCreateCommand(object):
                 scaffold = scaffold_class(entry.name)
                 scaffolds.append(scaffold)
             except Exception as e: # pragma: no cover
-                self.out('Warning: could not load entry point %s (%s: %s)' % (
+                self.out('Warning: could not load entry point {0!s} ({1!s}: {2!s})'.format(
                     entry.name, e.__class__.__name__, e))
         return scaffolds
 
@@ -177,7 +177,7 @@ class PCreateCommand(object):
         available = [x.name for x in self.scaffolds]
         diff = set(self.options.scaffold_name).difference(available)
         if diff:
-            self.out('Unavailable scaffolds: %s' % ", ".join(sorted(diff)))
+            self.out('Unavailable scaffolds: {0!s}'.format(", ".join(sorted(diff))))
             return False
 
         pkg_name = self.project_vars['package']

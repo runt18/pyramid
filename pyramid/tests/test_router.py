@@ -1346,6 +1346,6 @@ def exc_raised(exc, func, *arg, **kw):
     except exc as e:
         return e
     else:
-        raise AssertionError('%s not raised' % exc) # pragma: no cover
+        raise AssertionError('{0!s} not raised'.format(exc)) # pragma: no cover
 
     

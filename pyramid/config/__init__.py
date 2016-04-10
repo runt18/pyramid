@@ -448,7 +448,7 @@ class Configurator(
         package, filename = resolve_asset_spec(path_or_spec, self.package_name)
         if package is None:
             return filename # absolute filename
-        return '%s:%s' % (package, filename)
+        return '{0!s}:{1!s}'.format(package, filename)
 
     def _split_spec(self, path_or_spec):
         return resolve_asset_spec(path_or_spec, self.package_name)
@@ -524,12 +524,12 @@ class Configurator(
     def _add_predicate(self, type, name, factory, weighs_more_than=None,
                        weighs_less_than=None):
         factory = self.maybe_dotted(factory)
-        discriminator = ('%s predicate' % type, name)
+        discriminator = ('{0!s} predicate'.format(type), name)
         intr = self.introspectable(
-            '%s predicates' % type,
+            '{0!s} predicates'.format(type),
             discriminator,
-            '%s predicate named %s' % (type, name),
-            '%s predicate' % type)
+            '{0!s} predicate named {1!s}'.format(type, name),
+            '{0!s} predicate'.format(type))
         intr['name'] = name
         intr['factory'] = factory
         intr['weighs_more_than'] = weighs_more_than
@@ -758,7 +758,7 @@ class Configurator(
         if old_route_prefix is None:
             old_route_prefix = ''
 
-        route_prefix = '%s/%s' % (
+        route_prefix = '{0!s}/{1!s}'.format(
             old_route_prefix.rstrip('/'),
             route_prefix.lstrip('/')
             )
@@ -773,7 +773,7 @@ class Configurator(
                 c = getattr(module, 'includeme')
             except AttributeError:
                 raise ConfigurationError(
-                    "module %r has no attribute 'includeme'" % (module.__name__)
+                    "module {0!r} has no attribute 'includeme'".format((module.__name__))
                     )
                                                        
         spec = module.__name__ + ':' + c.__name__

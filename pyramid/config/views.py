@@ -249,7 +249,7 @@ class ViewDeriver(object):
                 view_name = getattr(view, '__name__', view)
                 msg = getattr(
                     request, 'authdebug_message',
-                    'Unauthorized: %s failed permission check' % view_name)
+                    'Unauthorized: {0!s} failed permission check'.format(view_name))
                 raise HTTPForbidden(msg, result=result)
             _secured_view.__call_permissive__ = view
             _secured_view.__permitted__ = _permitted
@@ -305,7 +305,7 @@ class ViewDeriver(object):
                 if not predicate(context, request):
                     view_name = getattr(view, '__name__', view)
                     raise PredicateMismatch(
-                        'predicate mismatch for view %s (%s)' % (
+                        'predicate mismatch for view {0!s} ({1!s})'.format(
                             view_name, predicate.text()))
             return view(context, request)
 
@@ -449,7 +449,7 @@ class DefaultViewMapper(object):
             mapped_view = self.map_class_requestonly(view)
         else:
             mapped_view = self.map_class_native(view)
-        mapped_view.__text__ = 'method %s of %s' % (
+        mapped_view.__text__ = 'method {0!s} of {1!s}'.format(
             self.attr or '__call__', object_description(view))
         return mapped_view
 
@@ -475,7 +475,7 @@ class DefaultViewMapper(object):
                 def mapped_view(context, request):
                     return _mapped_view(context, request)
             if self.attr is not None:
-                mapped_view.__text__ = 'attr %s of %s' % (
+                mapped_view.__text__ = 'attr {0!s} of {1!s}'.format(
                     self.attr, object_description(view))
             else:
                 mapped_view.__text__ = object_description(view)
@@ -1140,7 +1140,7 @@ class ViewsConfiguratorMixin(object):
             request_type = self.maybe_dotted(request_type)
             if not IInterface.providedBy(request_type):
                 raise ConfigurationError(
-                    'request_type must be an interface, not %s' % request_type)
+                    'request_type must be an interface, not {0!s}'.format(request_type))
 
         if context is None:
             context = for_
@@ -1192,7 +1192,7 @@ class ViewsConfiguratorMixin(object):
         discriminator = Deferred(discrim_func)
 
         if inspect.isclass(view) and attr:
-            view_desc = 'method %r of %s' % (
+            view_desc = 'method {0!r} of {1!s}'.format(
                 attr, self.object_description(view))
         else:
             view_desc = self.object_description(view)
@@ -1235,8 +1235,8 @@ class ViewsConfiguratorMixin(object):
                     # route configuration should have already happened in
                     # phase 2
                     raise ConfigurationError(
-                        'No route named %s found for view registration' %
-                        route_name)
+                        'No route named {0!s} found for view registration'.format(
+                        route_name))
 
             if renderer is None:
                 # use default renderer if one exists (reg'd in phase 1)
@@ -1399,7 +1399,7 @@ class ViewsConfiguratorMixin(object):
             mapper_intr = self.introspectable(
                 'view mappers',
                 discriminator,
-                'view mapper for %s' % view_desc,
+                'view mapper for {0!s}'.format(view_desc),
                 'view mapper'
                 )
             mapper_intr['mapper'] = mapper
@@ -1648,8 +1648,7 @@ class ViewsConfiguratorMixin(object):
         for arg in ('name', 'permission', 'context', 'for_', 'http_cache'):
             if arg in predicates:
                 raise ConfigurationError(
-                    '%s may not be used as an argument to add_forbidden_view'
-                    % arg
+                    '{0!s} may not be used as an argument to add_forbidden_view'.format(arg)
                 )
 
         if view is None:
@@ -1760,8 +1759,7 @@ class ViewsConfiguratorMixin(object):
         for arg in ('name', 'permission', 'context', 'for_', 'http_cache'):
             if arg in predicates:
                 raise ConfigurationError(
-                    '%s may not be used as an argument to add_notfound_view'
-                    % arg
+                    '{0!s} may not be used as an argument to add_notfound_view'.format(arg)
                 )
 
         if view is None:
@@ -2012,7 +2010,7 @@ class StaticURLInfo(object):
                     result = urljoin(url, subpath)
                     return result + qs + anchor
 
-        raise ValueError('No static URL definition matching %s' % path)
+        raise ValueError('No static URL definition matching {0!s}'.format(path))
 
     def add(self, config, name, spec, **extra):
         # This feature only allows for the serving of a directory and
@@ -2066,11 +2064,11 @@ class StaticURLInfo(object):
 
             # register a route using the computed view, permission, and
             # pattern, plus any extras passed to us via add_static_view
-            pattern = "%s*subpath" % name  # name already ends with slash
+            pattern = "{0!s}*subpath".format(name)  # name already ends with slash
             if config.route_prefix:
-                route_name = '__%s/%s' % (config.route_prefix, name)
+                route_name = '__{0!s}/{1!s}'.format(config.route_prefix, name)
             else:
-                route_name = '__%s' % name
+                route_name = '__{0!s}'.format(name)
             config.add_route(route_name, pattern, **extra)
             config.add_view(
                 route_name=route_name,
@@ -2094,7 +2092,7 @@ class StaticURLInfo(object):
 
         intr = config.introspectable('static views',
                                      name,
-                                     'static view for %r' % name,
+                                     'static view for {0!r}'.format(name),
                                      'static view')
         intr['name'] = name
         intr['spec'] = spec
@@ -2143,7 +2141,7 @@ class StaticURLInfo(object):
 
         intr = config.introspectable('cache busters',
                                      spec,
-                                     'cache buster for %r' % spec,
+                                     'cache buster for {0!r}'.format(spec),
                                      'cache buster')
         intr['cachebust'] = cachebust
         intr['path'] = spec

@@ -30,7 +30,7 @@ def _get_pattern(route):
     pattern = route.pattern
 
     if not pattern.startswith('/'):
-        pattern = '/%s' % pattern
+        pattern = '/{0!s}'.format(pattern)
     return pattern
 
 
@@ -46,7 +46,7 @@ def _get_print_format(fmt, max_name, max_pattern, max_view, max_method):
 
     for index, col in enumerate(fmt):
         size = max_map[col] + PAD
-        print_fmt += '{{%s: <{%s}}} ' % (col, index)
+        print_fmt += '{{{{{0!s}: <{{{1!s}}}}}}} '.format(col, index)
         sizes.append(size)
 
     return print_fmt.format(*sizes)
@@ -88,7 +88,7 @@ def _get_request_methods(route_request_methods, view_request_methods):
     elif request_methods:
         if excludes and request_methods == set([ANY_KEY]):
             for exclude in excludes:
-                request_methods.add('!%s' % exclude)
+                request_methods.add('!{0!s}'.format(exclude))
 
         request_methods = ','.join(sorted(request_methods))
 
@@ -107,7 +107,7 @@ def _get_view_module(view_callable):
 
         if isinstance(original_view, static_view):
             if original_view.package_name is not None:
-                return '%s:%s' % (
+                return '{0!s}:{1!s}'.format(
                     original_view.package_name,
                     original_view.docroot
                 )
@@ -121,9 +121,9 @@ def _get_view_module(view_callable):
         # for them and remove this logic
         view_name = str(view_callable)
 
-    view_module = '%s.%s' % (
+    view_module = '{0!s}.{1!s}'.format(
         view_callable.__module__,
-        view_name,
+        view_name
     )
 
     # If pyramid wraps something in wsgiapp or wsgiapp2 decorators
@@ -194,7 +194,7 @@ def get_route_data(route, registry):
                     if isinstance(request_method, string_types):
                         request_method = (request_method,)
                     elif isinstance(request_method, not_):
-                        request_method = ('!%s' % request_method.value,)
+                        request_method = ('!{0!s}'.format(request_method.value),)
 
                     view_request_methods[view_module].extend(request_method)
                 else:

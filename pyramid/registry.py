@@ -222,7 +222,7 @@ class Introspectable(dict):
 
     def __repr__(self):
         self._assert_resolved()
-        return '<%s category %r, discriminator %r>' % (self.__class__.__name__,
+        return '<{0!s} category {1!r}, discriminator {2!r}>'.format(self.__class__.__name__,
                                                        self.category_name,
                                                        self.discriminator)
 

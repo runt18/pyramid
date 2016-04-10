@@ -43,7 +43,7 @@ class TestJSON(unittest.TestCase):
         renderer = self._makeOne()
         renderer.add_adapter(datetime, adapter)
         result = renderer(None)({'a':now}, {'request':request})
-        self.assertEqual(result, '{"a": "%s"}' % now.isoformat())
+        self.assertEqual(result, '{{"a": "{0!s}"}}'.format(now.isoformat()))
 
     def test_with_custom_adapter2(self):
         request = testing.DummyRequest()
@@ -54,7 +54,7 @@ class TestJSON(unittest.TestCase):
         now = datetime.utcnow()
         renderer = self._makeOne(adapters=((datetime, adapter),))
         result = renderer(None)({'a':now}, {'request':request})
-        self.assertEqual(result, '{"a": "%s"}' % now.isoformat())
+        self.assertEqual(result, '{{"a": "{0!s}"}}'.format(now.isoformat()))
 
     def test_with_custom_serializer(self):
         class Serializer(object):

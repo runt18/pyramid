@@ -244,11 +244,11 @@ def route_request_iface(name, bases=()):
     # zope.interface.interface.Element.__init__ and
     # https://github.com/Pylons/pyramid/issues/232; as a result, always pass
     # __doc__ to the InterfaceClass constructor.
-    iface = InterfaceClass('%s_IRequest' % name, bases=bases,
+    iface = InterfaceClass('{0!s}_IRequest'.format(name), bases=bases,
                            __doc__="route_request_iface-generated interface")
     # for exception view lookups
     iface.combined = InterfaceClass(
-        '%s_combined_IRequest' % name,
+        '{0!s}_combined_IRequest'.format(name),
         bases=(iface, IRequest),
         __doc__='route_request_iface-generated combined interface')
     return iface

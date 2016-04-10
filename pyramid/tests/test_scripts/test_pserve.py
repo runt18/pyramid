@@ -82,7 +82,7 @@ class TestPServeCommand(unittest.TestCase):
         inst = self._makeOneWithPidFile(os.getpid())
         self._remove_pid_unlink_exception(inst)
         msg = [
-            'Removing PID file %s' % (self.pid_file),
+            'Removing PID file {0!s}'.format((self.pid_file)),
             'Cannot remove PID file: (Some OSError - unlink)',
             'Stale PID removed']
         self._assert_pid_file_not_removed(msg=''.join(msg))
@@ -93,9 +93,9 @@ class TestPServeCommand(unittest.TestCase):
         inst = self._makeOneWithPidFile(os.getpid())
         self._remove_pid_unlink_and_write_exceptions(inst)
         msg = [
-            'Removing PID file %s' % (self.pid_file),
+            'Removing PID file {0!s}'.format((self.pid_file)),
             'Cannot remove PID file: (Some OSError - unlink)',
-            'Stale PID left in file: %s ' % (self.pid_file),
+            'Stale PID left in file: {0!s} '.format((self.pid_file)),
             '(Some OSError - open)']
         self._assert_pid_file_not_removed(msg=''.join(msg))
         with open(self.pid_file) as f:
@@ -141,7 +141,7 @@ class TestPServeCommand(unittest.TestCase):
 
     def _assert_pid_file_removed(self, verbose=False):
         self.assertFalse(os.path.exists(self.pid_file))
-        msg = 'Removing PID file %s' % (self.pid_file) if verbose else ''
+        msg = 'Removing PID file {0!s}'.format((self.pid_file)) if verbose else ''
         self.assertEqual(self.out_.getvalue(), msg)
 
     def _assert_pid_file_not_removed(self, msg):
@@ -177,16 +177,16 @@ class TestPServeCommand(unittest.TestCase):
 
     def test_run_stop_daemon_no_such_pid_file(self):
         path = os.path.join(os.path.dirname(__file__), 'wontexist.pid')
-        inst = self._makeOne('--stop-daemon', '--pid-file=%s' % path)
+        inst = self._makeOne('--stop-daemon', '--pid-file={0!s}'.format(path))
         inst.run()
-        msg = 'No PID file exists in %s' % path
+        msg = 'No PID file exists in {0!s}'.format(path)
         self.assertTrue(msg in self.out_.getvalue())
 
     def test_run_stop_daemon_bad_pid_file(self):
         path = __file__
-        inst = self._makeOne('--stop-daemon', '--pid-file=%s' % path)
+        inst = self._makeOne('--stop-daemon', '--pid-file={0!s}'.format(path))
         inst.run()
-        msg = 'Not a valid PID file in %s' % path
+        msg = 'Not a valid PID file in {0!s}'.format(path)
         self.assertTrue(msg in self.out_.getvalue())
 
     def test_run_stop_daemon_invalid_pid_in_file(self):
@@ -194,9 +194,9 @@ class TestPServeCommand(unittest.TestCase):
         with open(fn, 'wb') as tmp:
             tmp.write(b'9999999')
         tmp.close()
-        inst = self._makeOne('--stop-daemon', '--pid-file=%s' % fn)
+        inst = self._makeOne('--stop-daemon', '--pid-file={0!s}'.format(fn))
         inst.run()
-        msg = 'PID in %s is not valid (deleting)' % fn
+        msg = 'PID in {0!s} is not valid (deleting)'.format(fn)
         self.assertTrue(msg in self.out_.getvalue())
 
     def test_get_options_with_command(self):

@@ -444,7 +444,7 @@ class Test_object_description(unittest.TestCase):
 
     def test_nomodule(self):
         o = object()
-        self.assertEqual(self._callFUT(o), 'object %s' % str(o))
+        self.assertEqual(self._callFUT(o), 'object {0!s}'.format(str(o)))
 
     def test_module(self):
         import pyramid
@@ -470,7 +470,7 @@ class Test_object_description(unittest.TestCase):
         inst = Dummy()
         self.assertEqual(
             self._callFUT(inst),
-            "object %s" % str(inst))
+            "object {0!s}".format(str(inst)))
 
     def test_shortened_repr(self):
         inst = ['1'] * 1000

@@ -94,7 +94,7 @@ master_doc = 'index'
 # General substitutions.
 project = 'The Pyramid Web Framework'
 thisyear = datetime.datetime.now().year
-copyright = '2008-%s, Agendaless Consulting' % thisyear
+copyright = '2008-{0!s}, Agendaless Consulting'.format(thisyear)
 
 # The default replacements for |version| and |release|, also used in various
 # other places throughout the built documents.
@@ -154,7 +154,7 @@ html_theme_options = dict(
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-html_title = 'The Pyramid Web Framework v%s' % release
+html_title = 'The Pyramid Web Framework v{0!s}'.format(release)
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -412,11 +412,10 @@ def resig(app, what, name, obj, options, signature, return_annotation):
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = 'The Pyramid Web Framework, Version %s' \
-             % release
+epub_title = 'The Pyramid Web Framework, Version {0!s}'.format(release)
 epub_author = 'Chris McDonough'
 epub_publisher = 'Agendaless Consulting'
-epub_copyright = '2008-%d' % thisyear
+epub_copyright = '2008-{0:d}'.format(thisyear)
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.
@@ -430,8 +429,7 @@ epub_scheme = 'ISBN'
 epub_identifier = '0615445675'
 
 # A unique identification for the text.
-epub_uid = 'The Pyramid Web Framework, Version %s' \
-           % release
+epub_uid = 'The Pyramid Web Framework, Version {0!s}'.format(release)
 
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ['_static/opensearch.xml', '_static/doctools.js',

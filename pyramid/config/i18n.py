@@ -83,8 +83,8 @@ class I18NConfiguratorMixin(object):
                 directory = os.path.join(package_path(package), filename)
 
             if not os.path.isdir(os.path.realpath(directory)):
-                raise ConfigurationError('"%s" is not a directory' %
-                                         directory)
+                raise ConfigurationError('"{0!s}" is not a directory'.format(
+                                         directory))
             intr = self.introspectable('translation directories', directory,
                                        spec, 'translation directory')
             intr['directory'] = directory

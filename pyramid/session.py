@@ -85,7 +85,7 @@ def signed_deserialize(serialized, secret, hmac=hmac):
                               base64.b64decode(bytes_(serialized[40:])))
     except (binascii.Error, TypeError) as e:
         # Badly formed data can make base64 die
-        raise ValueError('Badly formed base64 data: %s' % e)
+        raise ValueError('Badly formed base64 data: {0!s}'.format(e))
 
     try:
         # bw-compat with pyramid <= 1.5b1 where latin1 is the default
@@ -383,8 +383,8 @@ def BaseCookieSessionFactory(
                 ))
             if len(cookieval) > 4064:
                 raise ValueError(
-                    'Cookie value is too long to store (%s bytes)' %
-                    len(cookieval)
+                    'Cookie value is too long to store ({0!s} bytes)'.format(
+                    len(cookieval))
                     )
             response.set_cookie(
                 self._cookie_name,

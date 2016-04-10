@@ -117,7 +117,7 @@ class URLMethodsMixin(object):
                 port = None
         url = scheme + '://' + host
         if port:
-            url += ':%s' % port
+            url += ':{0!s}'.format(port)
 
         url_encoding = getattr(self, 'url_encoding', 'utf-8') # webob 1.2b3+
         bscript_name = bytes_(self.script_name, url_encoding)
@@ -261,7 +261,7 @@ class URLMethodsMixin(object):
         route = mapper.get_route(route_name)
 
         if route is None:
-            raise KeyError('No such route named %s' % route_name)
+            raise KeyError('No such route named {0!s}'.format(route_name))
 
         if route.pregenerator is not None:
             elements, kw = route.pregenerator(self, elements, kw)
@@ -702,7 +702,7 @@ class URLMethodsMixin(object):
                 # /absolute/path it's a relative/path; this means its relative
                 # to the package in which the caller's module is defined.
                 package = caller_package()
-                path = '%s:%s' % (package.__name__, path)
+                path = '{0!s}:{1!s}'.format(package.__name__, path)
 
         try:
             reg = self.registry
@@ -711,7 +711,7 @@ class URLMethodsMixin(object):
 
         info = reg.queryUtility(IStaticURLInfo)
         if info is None:
-            raise ValueError('No static URL definition matching %s' % path)
+            raise ValueError('No static URL definition matching {0!s}'.format(path))
 
         return info.generate(path, self, **kw)
 
@@ -747,7 +747,7 @@ class URLMethodsMixin(object):
                 # /absolute/path it's a relative/path; this means its relative
                 # to the package in which the caller's module is defined.
                 package = caller_package()
-                path = '%s:%s' % (package.__name__, path)
+                path = '{0!s}:{1!s}'.format(package.__name__, path)
 
         kw['_app_url'] = self.script_name
         return self.static_url(path, **kw)
@@ -899,7 +899,7 @@ def static_url(path, request, **kw):
             # /absolute/path it's a relative/path; this means its relative
             # to the package in which the caller's module is defined.
             package = caller_package()
-            path = '%s:%s' % (package.__name__, path)
+            path = '{0!s}:{1!s}'.format(package.__name__, path)
     return request.static_url(path, **kw)
 
 
@@ -918,7 +918,7 @@ def static_path(path, request, **kw):
             # /absolute/path it's a relative/path; this means its relative
             # to the package in which the caller's module is defined.
             package = caller_package()
-            path = '%s:%s' % (package.__name__, path)
+            path = '{0!s}:{1!s}'.format(package.__name__, path)
     return request.static_path(path, **kw)
 
 def current_route_url(request, *elements, **kw):

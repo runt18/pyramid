@@ -235,8 +235,7 @@ def view_execution_permitted(context, request, name=''):
                             'It would not make sense to claim that this view '
                             '"is" or "is not" permitted.')
         return Allowed(
-            'Allowed: view name %r in context %r (no permission defined)' %
-            (name, context))
+            'Allowed: view name {0!r} in context {1!r} (no permission defined)'.format(name, context))
     return view.__permitted__(context, request)
 
 
@@ -255,7 +254,7 @@ class PermitsResult(int):
         return self.msg
 
     def __repr__(self):
-        return '<%s instance at %s with msg %r>' % (self.__class__.__name__,
+        return '<{0!s} instance at {1!s} with msg {2!r}>'.format(self.__class__.__name__,
                                                     id(self),
                                                     self.msg)
 
@@ -300,7 +299,7 @@ class ACLPermitsResult(int):
         return self.msg
 
     def __repr__(self):
-        return '<%s instance at %s with msg %r>' % (self.__class__.__name__,
+        return '<{0!s} instance at {1!s} with msg {2!r}>'.format(self.__class__.__name__,
                                                     id(self),
                                                     self.msg)
 

@@ -186,13 +186,13 @@ class PViewsCommand(object):
 
     def output_route_attrs(self, attrs, indent):
         route = attrs['matched_route']
-        self.out("%sroute name: %s" % (indent, route.name))
-        self.out("%sroute pattern: %s" % (indent, route.pattern))
-        self.out("%sroute path: %s" % (indent, route.path))
-        self.out("%ssubpath: %s" % (indent, '/'.join(attrs['subpath'])))
+        self.out("{0!s}route name: {1!s}".format(indent, route.name))
+        self.out("{0!s}route pattern: {1!s}".format(indent, route.pattern))
+        self.out("{0!s}route path: {1!s}".format(indent, route.path))
+        self.out("{0!s}subpath: {1!s}".format(indent, '/'.join(attrs['subpath'])))
         predicates = ', '.join([p.text() for p in route.predicates])
         if predicates != '':
-            self.out("%sroute predicates (%s)" % (indent, predicates))
+            self.out("{0!s}route predicates ({1!s})".format(indent, predicates))
 
     def output_view_info(self, view_wrapper, level=1):
         indent = "    " * level
@@ -201,16 +201,16 @@ class PViewsCommand(object):
         attr = getattr(view_wrapper, '__view_attr__', None)
         request_attrs = getattr(view_wrapper, '__request_attrs__', {})
         if attr is not None:
-            view_callable = "%s.%s.%s" % (module, name, attr)
+            view_callable = "{0!s}.{1!s}.{2!s}".format(module, name, attr)
         else:
             attr = view_wrapper.__class__.__name__
             if attr == 'function':
                 attr = name
-            view_callable = "%s.%s" % (module, attr)
+            view_callable = "{0!s}.{1!s}".format(module, attr)
         self.out('')
         if 'matched_route' in request_attrs:
-            self.out("%sRoute:" % indent)
-            self.out("%s------" % indent)
+            self.out("{0!s}Route:".format(indent))
+            self.out("{0!s}------".format(indent))
             self.output_route_attrs(request_attrs, indent)
             permission = getattr(view_wrapper, '__permission__', None)
             if not IMultiView.providedBy(view_wrapper):
@@ -218,16 +218,16 @@ class PViewsCommand(object):
                 del request_attrs['matched_route']
                 self.output_view_info(view_wrapper, level + 1)
         else:
-            self.out("%sView:" % indent)
-            self.out("%s-----" % indent)
-            self.out("%s%s" % (indent, view_callable))
+            self.out("{0!s}View:".format(indent))
+            self.out("{0!s}-----".format(indent))
+            self.out("{0!s}{1!s}".format(indent, view_callable))
             permission = getattr(view_wrapper, '__permission__', None)
             if permission is not None:
-                self.out("%srequired permission = %s" % (indent, permission))
+                self.out("{0!s}required permission = {1!s}".format(indent, permission))
             predicates = getattr(view_wrapper, '__predicates__', None)
             if predicates is not None:
                 predicate_text = ', '.join([p.text() for p in predicates])
-                self.out("%sview predicates (%s)" % (indent, predicate_text))
+                self.out("{0!s}view predicates ({1!s})".format(indent, predicate_text))
 
     def run(self):
         if len(self.args) < 2:
@@ -237,17 +237,17 @@ class PViewsCommand(object):
         url = self.args[1]
 
         if not url.startswith('/'):
-            url = '/%s' % url
+            url = '/{0!s}'.format(url)
         request = Request.blank(url)
         env = self.bootstrap[0](config_uri, options=parse_vars(self.args[2:]),
                                 request=request)
         view = self._find_view(request)
         self.out('')
-        self.out("URL = %s" % url)
+        self.out("URL = {0!s}".format(url))
         self.out('')
         if view is not None:
-            self.out("    context: %s" % view.__request_attrs__['context'])
-            self.out("    view name: %s" % view.__request_attrs__['view_name'])
+            self.out("    context: {0!s}".format(view.__request_attrs__['context']))
+            self.out("    view name: {0!s}".format(view.__request_attrs__['view_name']))
         if IMultiView.providedBy(view):
             for dummy, view_wrapper, dummy in view.views:
                 self.output_view_info(view_wrapper)

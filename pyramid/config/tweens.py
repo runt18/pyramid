@@ -118,7 +118,7 @@ class TweensConfiguratorMixin(object):
         name = tween_factory
 
         if name in (MAIN, INGRESS):
-            raise ConfigurationError('%s is a reserved tween name' % name)
+            raise ConfigurationError('{0!s} is a reserved tween name'.format(name))
 
         tween_factory = self.maybe_dotted(tween_factory)
 
@@ -132,13 +132,13 @@ class TweensConfiguratorMixin(object):
             if p is not None:
                 if not is_string_or_iterable(p):
                     raise ConfigurationError(
-                        '"%s" must be a string or iterable, not %s' % (t, p))
+                        '"{0!s}" must be a string or iterable, not {1!s}'.format(t, p))
 
         if over is INGRESS or is_nonstr_iter(over) and INGRESS in over:
-            raise ConfigurationError('%s cannot be over INGRESS' % name)
+            raise ConfigurationError('{0!s} cannot be over INGRESS'.format(name))
 
         if under is MAIN or is_nonstr_iter(under) and MAIN in under:
-            raise ConfigurationError('%s cannot be under MAIN' % name)
+            raise ConfigurationError('{0!s} cannot be under MAIN'.format(name))
 
         registry = self.registry
         introspectables = []
@@ -171,7 +171,7 @@ class TweensConfiguratorMixin(object):
         intr = self.introspectable('tweens',
                                    discriminator,
                                    name,
-                                   '%s tween' % tween_type)
+                                   '{0!s} tween'.format(tween_type))
         intr['name'] = name
         intr['factory'] = tween_factory
         intr['type'] = tween_type

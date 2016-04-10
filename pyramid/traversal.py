@@ -108,7 +108,7 @@ def find_resource(resource, path):
     view_name = D['view_name']
     context = D['context']
     if view_name:
-        raise KeyError('%r has no subelement %s' % (context, view_name))
+        raise KeyError('{0!r} has no subelement {1!s}'.format(context, view_name))
     return context
 
 find_model = find_resource # b/w compat (forever)
@@ -578,7 +578,7 @@ the ``safe`` argument to this function.  This corresponds to the
 if PY2:
     # special-case on Python 2 for speed?  unchecked
     def quote_path_segment(segment, safe=''):
-        """ %s """ % quote_path_segment_doc
+        """ {0!s} """.format(quote_path_segment_doc)
         # The bit of this code that deals with ``_segment_cache`` is an
         # optimization: we cache all the computation of URL path segments
         # in this module-scope dictionary with the original string (or
@@ -597,7 +597,7 @@ if PY2:
             return result
 else:
     def quote_path_segment(segment, safe=''):
-        """ %s """ % quote_path_segment_doc
+        """ {0!s} """.format(quote_path_segment_doc)
         # The bit of this code that deals with ``_segment_cache`` is an
         # optimization: we cache all the computation of URL path segments
         # in this module-scope dictionary with the original string (or

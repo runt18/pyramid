@@ -9,7 +9,7 @@ def get_root(request):
     return Resource({'a': Resource({'b': Resource({'c': Resource()})})})
 
 def hello_world_of_resources(context, request):
-    output = "Here's a resource and its children: %s" % context
+    output = "Here's a resource and its children: {0!s}".format(context)
     return Response(output)
 
 if __name__ == '__main__':

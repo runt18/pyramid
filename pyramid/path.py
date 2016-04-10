@@ -10,7 +10,7 @@ from pyramid.interfaces import IAssetDescriptor
 from pyramid.compat import string_types
 
 ignore_types = [ imp.C_EXTENSION, imp.C_BUILTIN ]
-init_names = [ '__init__%s' % x[0] for x in imp.get_suffixes() if
+init_names = [ '__init__{0!s}'.format(x[0]) for x in imp.get_suffixes() if
                x[0] and x[2] not in ignore_types ]
 
 def caller_path(path, level=2):
@@ -94,7 +94,7 @@ class Resolver(object):
                     __import__(package)
                 except ImportError:
                     raise ValueError(
-                        'The dotted name %r cannot be imported' % (package,)
+                        'The dotted name {0!r} cannot be imported'.format(package)
                         )
                 package = sys.modules[package]
             self.package = package_of(package)
@@ -204,7 +204,7 @@ class AssetResolver(Resolver):
                 package_name = getattr(self.package, '__name__', None)
             if package_name is None:
                 raise ValueError(
-                    'relative spec %r irresolveable without package' % (spec,)
+                    'relative spec {0!r} irresolveable without package'.format(spec)
                 )
         return PkgResourcesAssetDescriptor(package_name, path)
 
@@ -293,7 +293,7 @@ class DottedNameResolver(Resolver):
 
         """
         if not isinstance(dotted, string_types):
-            raise ValueError('%r is not a string' % (dotted,))
+            raise ValueError('{0!r} is not a string'.format(dotted))
         package = self.package
         if package is CALLER_PACKAGE:
             package = caller_package()
@@ -331,7 +331,7 @@ class DottedNameResolver(Resolver):
         if value.startswith(('.', ':')):
             if not package:
                 raise ValueError(
-                    'relative name %r irresolveable without package' % (value,)
+                    'relative name {0!r} irresolveable without package'.format(value)
                     )
             if value in ['.', ':']:
                 value = package.__name__
@@ -339,7 +339,7 @@ class DottedNameResolver(Resolver):
                 value = package.__name__ + value
         # Calling EntryPoint.load with an argument is deprecated.
         # See https://pythonhosted.org/setuptools/history.html#id8
-        ep = pkg_resources.EntryPoint.parse('x=%s' % value)
+        ep = pkg_resources.EntryPoint.parse('x={0!s}'.format(value))
         if hasattr(ep, 'resolve'):
             # setuptools>=10.2
             return ep.resolve()  # pragma: NO COVER
@@ -354,7 +354,7 @@ class DottedNameResolver(Resolver):
         if value == '.':
             if module is None:
                 raise ValueError(
-                    'relative name %r irresolveable without package' % (value,)
+                    'relative name {0!r} irresolveable without package'.format(value)
                 )
             name = module.split('.')
         else:
@@ -393,7 +393,7 @@ class PkgResourcesAssetDescriptor(object):
         self.path = path
 
     def absspec(self):
-        return '%s:%s' % (self.pkg_name, self.path)
+        return '{0!s}:{1!s}'.format(self.pkg_name, self.path)
 
     def abspath(self):
         return os.path.abspath(

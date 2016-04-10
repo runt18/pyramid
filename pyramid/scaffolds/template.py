@@ -38,7 +38,7 @@ class Template(object):
                 substitute_escaped_double_braces(
                     substitute_double_braces(content, TypeMapper(vars))), fsenc)
         except Exception as e:
-            _add_except(e, ' in file %s' % filename)
+            _add_except(e, ' in file {0!s}'.format(filename))
             raise
 
     def module_dir(self):
@@ -54,7 +54,7 @@ class Template(object):
         construct a path.  If _template_dir is a tuple, it should be a
         2-element tuple: ``(package_name, package_relative_path)``."""
         assert self._template_dir is not None, (
-            "Template %r didn't set _template_dir" % self)
+            "Template {0!r} didn't set _template_dir".format(self))
         if isinstance(self._template_dir, tuple):
             return self._template_dir
         else:
@@ -80,7 +80,7 @@ class Template(object):
     def write_files(self, command, output_dir, vars):
         template_dir = self.template_dir()
         if not self.exists(output_dir):
-            self.out("Creating directory %s" % output_dir)
+            self.out("Creating directory {0!s}".format(output_dir))
             if not command.options.simulate:
                 # Don't let copydir create this top-level directory,
                 # since copydir will svn add it sometimes:
@@ -139,7 +139,7 @@ def eval_with_catch(expr, vars):
     try:
         return eval(expr, vars)
     except Exception as e:
-        _add_except(e, 'in expression %r' % expr)
+        _add_except(e, 'in expression {0!r}'.format(expr))
         raise
 
 double_brace_pattern = re.compile(r'{{(?P<braced>.*?)}}')
@@ -155,7 +155,7 @@ escaped_double_brace_pattern = re.compile(r'\\{\\{(?P<escape_braced>[^\\]*?)\\}\
 def substitute_escaped_double_braces(content):
     def escaped_double_bracerepl(match):
         value = match.group('escape_braced').strip()
-        return "{{%(value)s}}" % locals()
+        return "{{{{{value!s}}}}}".format(**locals())
     return escaped_double_brace_pattern.sub(escaped_double_bracerepl, content)
 
 def _add_except(exc, info): # pragma: no cover

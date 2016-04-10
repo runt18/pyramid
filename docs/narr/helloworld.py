@@ -4,7 +4,7 @@ from pyramid.response import Response
 
 
 def hello_world(request):
-    return Response('Hello %(name)s!' % request.matchdict)
+    return Response('Hello {name!s}!'.format(**request.matchdict))
 
 if __name__ == '__main__':
     config = Configurator()

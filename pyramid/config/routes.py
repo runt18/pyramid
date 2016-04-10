@@ -342,7 +342,7 @@ class RoutesConfiguratorMixin(object):
 
         intr = self.introspectable('routes',
                                    name,
-                                   '%s (pattern: %r)' % (name, pattern),
+                                   '{0!s} (pattern: {1!r})'.format(name, pattern),
                                    'route')
         intr['name'] = name
         intr['pattern'] = pattern

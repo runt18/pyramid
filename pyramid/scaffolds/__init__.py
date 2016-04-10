@@ -34,7 +34,7 @@ class PyramidTemplate(Template):
         separator = "=" * 79
         msg = dedent(
             """
-            %(separator)s
+            {separator!s}
             Tutorials: http://docs.pylonsproject.org/projects/pyramid_tutorials
             Documentation: http://docs.pylonsproject.org/projects/pyramid
 
@@ -42,8 +42,8 @@ class PyramidTemplate(Template):
             Mailing List: http://groups.google.com/group/pylons-discuss
 
             Welcome to Pyramid.  Sorry for the convenience.
-            %(separator)s
-        """ % {'separator': separator})
+            {separator!s}
+        """.format(**{'separator': separator}))
 
         self.out(msg)
         return Template.post(self, command, output_dir, vars)

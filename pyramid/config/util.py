@@ -154,7 +154,7 @@ class PredicateList(object):
                 weights.append(1 << n + 1)
                 preds.append(pred)
         if kw:
-            raise ConfigurationError('Unknown predicate values: %r' % (kw,))
+            raise ConfigurationError('Unknown predicate values: {0!r}'.format(kw))
         # A "order" is computed for the predicate list.  An order is
         # a scoring.
         #

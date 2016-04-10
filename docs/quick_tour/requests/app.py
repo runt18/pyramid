@@ -8,7 +8,7 @@ def hello_world(request):
     url = request.url
     name = request.params.get('name', 'No Name Provided')
 
-    body = 'URL %s with name: %s' % (url, name)
+    body = 'URL {0!s} with name: {1!s}'.format(url, name)
     return Response(
         content_type="text/plain",
         body=body

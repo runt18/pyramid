@@ -6,7 +6,7 @@ class Yup(object):
         self.val = val
 
     def text(self):
-        return 'path_startswith = %s' % (self.val,)
+        return 'path_startswith = {0!s}'.format(self.val)
 
     phash = text
 

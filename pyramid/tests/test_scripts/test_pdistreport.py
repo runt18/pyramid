@@ -68,6 +68,6 @@ class DummyDistribution(object):
     def __init__(self, name):
         self.project_name = name
         self.version = '1'
-        self.location = '/projects/%s' % name
+        self.location = '/projects/{0!s}'.format(name)
         
         

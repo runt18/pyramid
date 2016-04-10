@@ -76,7 +76,7 @@ class ConfigurationConflictError(ConfigurationError):
         r = ["Conflicting configuration actions"]
         items = sorted(self._conflicts.items())
         for discriminator, infos in items:
-            r.append("  For: %s" % (discriminator, ))
+            r.append("  For: {0!s}".format(discriminator ))
             for info in infos:
                 for line in str(info).rstrip().split(CR):
                     r.append("    " + line)
@@ -92,7 +92,7 @@ class ConfigurationExecutionError(ConfigurationError):
         self.etype, self.evalue, self.info = etype, evalue, info
 
     def __str__(self):
-        return "%s: %s\n  in:\n  %s" % (self.etype, self.evalue, self.info)
+        return "{0!s}: {1!s}\n  in:\n  {2!s}".format(self.etype, self.evalue, self.info)
 
 class CyclicDependencyError(Exception):
     """ The exception raised when the Pyramid topological sorter detects a
@@ -106,6 +106,6 @@ class CyclicDependencyError(Exception):
         for cycle in cycles:
             dependent = cycle
             dependees = cycles[cycle]
-            L.append('%r sorts before %r' % (dependent, dependees))
+            L.append('{0!r} sorts before {1!r}'.format(dependent, dependees))
         msg = 'Implicit ordering cycle:' + '; '.join(L)
         return msg

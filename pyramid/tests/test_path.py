@@ -286,31 +286,31 @@ class TestPkgResourcesAssetDescriptor(unittest.TestCase):
     def test_stream(self):
         inst = self._makeOne()
         inst.pkg_resources = DummyPkgResource()
-        inst.pkg_resources.resource_stream = lambda x, y: '%s:%s' % (x, y)
+        inst.pkg_resources.resource_stream = lambda x, y: '{0!s}:{1!s}'.format(x, y)
         s = inst.stream()
         self.assertEqual(s,
-                         '%s:%s' % ('pyramid.tests', 'test_asset.py'))
+                         '{0!s}:{1!s}'.format('pyramid.tests', 'test_asset.py'))
 
     def test_isdir(self):
         inst = self._makeOne()
         inst.pkg_resources = DummyPkgResource()
-        inst.pkg_resources.resource_isdir = lambda x, y: '%s:%s' % (x, y)
+        inst.pkg_resources.resource_isdir = lambda x, y: '{0!s}:{1!s}'.format(x, y)
         self.assertEqual(inst.isdir(),
-                         '%s:%s' % ('pyramid.tests', 'test_asset.py'))
+                         '{0!s}:{1!s}'.format('pyramid.tests', 'test_asset.py'))
 
     def test_listdir(self):
         inst = self._makeOne()
         inst.pkg_resources = DummyPkgResource()
-        inst.pkg_resources.resource_listdir = lambda x, y: '%s:%s' % (x, y)
+        inst.pkg_resources.resource_listdir = lambda x, y: '{0!s}:{1!s}'.format(x, y)
         self.assertEqual(inst.listdir(),
-                         '%s:%s' % ('pyramid.tests', 'test_asset.py'))
+                         '{0!s}:{1!s}'.format('pyramid.tests', 'test_asset.py'))
 
     def test_exists(self):
         inst = self._makeOne()
         inst.pkg_resources = DummyPkgResource()
-        inst.pkg_resources.resource_exists = lambda x, y: '%s:%s' % (x, y)
+        inst.pkg_resources.resource_exists = lambda x, y: '{0!s}:{1!s}'.format(x, y)
         self.assertEqual(inst.exists(),
-                         '%s:%s' % ('pyramid.tests', 'test_asset.py'))
+                         '{0!s}:{1!s}'.format('pyramid.tests', 'test_asset.py'))
 
 class TestFSAssetDescriptor(unittest.TestCase):
     def _getTargetClass(self):

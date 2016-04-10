@@ -179,7 +179,7 @@ class PRequestCommand(object):
         if self.options.display_headers:
             self.out(response.status)
             for name, value in response.headerlist:
-                self.out('%s: %s' % (name, value))
+                self.out('{0!s}: {1!s}'.format(name, value))
         if response.charset:
             self.out(response.ubody)
         else:
