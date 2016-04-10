@@ -368,9 +368,13 @@ def backmatter(name, arguments, options, content, lineno,
                       format='latex')]
 
 
-def app_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+def app_role(role, rawtext, text, lineno, inliner, options=None, content=None):
     """custom role for :app: marker, does nothing in particular except allow
     :app:`Pyramid` to work (for later search and replace)."""
+    if options is None:
+        options = {}
+    if content is None:
+        content = []
     if 'class' in options:
         assert 'classes' not in options
         options['classes'] = options['class']
