@@ -281,7 +281,7 @@ class TestPredicateList(unittest.TestCase):
         self.assertEqual(len(predicates), 2)
         info = {'match':{'a':'a'}}
         request = DummyRequest()
-        self.assertTrue(all([p(info, request) for p in predicates]))
+        self.assertTrue(all(p(info, request) for p in predicates))
         self.assertEqual(info, {'match':
                                 {'a':'a', 'dummy':'foo',
                                  'traverse':('1', 'foo', 'a')}})

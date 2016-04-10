@@ -158,7 +158,7 @@ def _secure_path(path_tuple):
         # unless someone screws up the traversal_path code
         # (request.subpath is computed via traversal_path too)
         return None
-    if any([_contains_slash(item) for item in path_tuple]):
+    if any( _contains_slash(item) for item in path_tuple):
         return None
     encoded = slash.join(path_tuple) # will be unicode
     return encoded
